@@ -6,63 +6,247 @@ st.set_page_config(
     layout="wide"
 )
 
-st.markdown("""
-<style>
-.stApp {
-    background-color: #f5f5f5;
-}
+incident_ids = []
+dates = []
+times = []
+shifts = []
+locations = []
+departments = []
+incident_types = []
+severities = []
+injury_statuses = []
+lost_time_injuries = []
+causes = []
+corrective_actions = []
+incident_statuses = []
 
-.main-title {
-    text-align: center;
-    font-size: 42px;
-    font-weight: bold;
-    color: #1f2937;
-    margin-top: 30px;
-}
-
-.subtitle {
-    text-align: center;
-    font-size: 18px;
-    color: #6b7280;
-    margin-bottom: 35px;
-}
-
-.login-box {
-    max-width: 500px;
-    margin: auto;
-    padding: 35px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown('<div class="main-title">⛏️ Mining Monitoring System</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Safety • Equipment • Risk Management</div>', unsafe_allow_html=True)
-
-st.markdown('<div class="login-box">', unsafe_allow_html=True)
+st.title("⛏️ Mining Monitoring System")
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
 
-if st.button("LOGIN", use_container_width=True):
+if st.button("LOGIN"):
     if username == "administrator123" and password == "administrator987":
-        st.success("Login successful")
-        st.write("Role: Administrator")
+        st.session_state.logged_in = True
+        st.session_state.role = "Administrator"
     elif username == "safety123" and password == "safety987":
-        st.success("Login successful")
-        st.write("Role: Safety Officer")
+        st.session_state.logged_in = True
+        st.session_state.role = "Safety Officer"
     elif username == "mining123" and password == "mining987":
-        st.success("Login successful")
-        st.write("Role: Mining Engineer")
+        st.session_state.logged_in = True
+        st.session_state.role = "Mining Engineer"
     elif username == "maintenance123" and password == "maintenance987":
-        st.success("Login successful")
-        st.write("Role: Maintenance Engineer")
+        st.session_state.logged_in = True
+        st.session_state.role = "Maintenance Engineer"
     elif username == "manager123" and password == "manager987":
-        st.success("Login successful")
-        st.write("Role: Manager")
+        st.session_state.logged_in = True
+        st.session_state.role = "Manager"
     else:
         st.error("Invalid username or password")
 
-st.markdown('</div>', unsafe_allow_html=True)
+if st.session_state.get("logged_in", False):
+
+    st.success("Login successful")
+    st.write("Role:", st.session_state.role)
+
+    module = st.selectbox(
+        "Select Module",
+        [
+            "Dashboard",
+            "Worker Safety",
+            "Safety Incidents",
+            "Equipment",
+            "Equipment Monitoring",
+            "Maintenance",
+            "Risk Assessment",
+            "Alerts"
+        ]
+    )
+
+    if module == "Safety Incidents":
+
+        st.header("Safety Incident Database")
+
+        option = st.selectbox(
+            "Select an option",
+            [
+                "Add Incident",
+                "View Incidents",
+                "Search Incidents",
+                "Filter Incidents",
+                "Categorise Incidents",
+                "Count Incidents",
+                "Analyse Incident Trends"
+            ]
+        )
+
+        if option == "Add Incident":
+
+            incident_id = st.text_input("Incident ID")
+            date = st.date_input("Date")
+            time = st.time_input("Time")
+            shift = st.selectbox("Shift", ["Day", "Night"])
+            location = st.text_input("Location")
+            department = st.text_input("Department")
+            incident_type = st.text_input("Incident Type")
+            severity = st.selectbox("Severity", ["Low", "Medium", "High"])
+            injury_status = st.selectbox("Was there an injury?", ["Yes", "No"])
+            lost_time_injury = st.selectbox(
+                "Was it a lost-time injury?", ["Yes", "No"]
+            )
+            cause = st.text_input("Cause")
+            corrective_action = st.text_input("Corrective Action")
+            incident_status = st.selectbox(
+                "Incident Status", ["Open", "Closed"]
+            )
+
+            if st.button("Save Incident"):
+
+                incident_ids.append(incident_id)
+                dates.append(str(date))
+                times.append(str(time))
+                shifts.append(shift)
+                locations.append(location)
+                departments.append(department)
+                incident_types.append(incident_type)
+                severities.append(severity)
+                injury_statuses.append(injury_status)
+                lost_time_injuries.append(lost_time_injury)
+                causes.append(cause)
+                corrective_actions.append(corrective_action)
+                incident_statuses.append(incident_status)
+
+                st.success("Incident successfully added!")
+
+        elif option == "View Incidents":
+
+            if len(incident_ids) == 0:
+                st.info("No incidents recorded.")
+            else:
+                for i in range(len(incident_ids)):
+                    st.subheader("Incident " + str(i + 1))
+
+                    st.write("Incident ID:", incident_ids[i])
+                    st.write("Date:", dates[i])
+                    st.write("Time:", times[i])
+                    st.write("Shift:", shifts[i])
+                    st.write("Location:", locations[i])
+                    st.write("Department:", departments[i])
+                    st.write("Incident Type:", incident_types[i])
+                    st.write("Severity:", severities[i])
+                    st.write("Injury Status:", injury_statuses[i])
+                    st.write("Lost-Time Injury:", lost_time_injuries[i])
+                    st.write("Cause:", causes[i])
+                    st.write("Corrective Action:", corrective_actions[i])
+                    st.write("Incident Status:", incident_statuses[i])
+
+        elif option == "Search Incidents":
+
+            search = st.text_input(
+                "Enter Incident ID, Location or Department"
+            ).lower()
+
+            if st.button("Search"):
+
+                found = False
+
+                for i in range(len(incident_ids)):
+
+                    if (
+                        search in incident_ids[i].lower()
+                        or search in locations[i].lower()
+                        or search in departments[i].lower()
+                    ):
+                        st.write("Incident ID:", incident_ids[i])
+                        st.write("Date:", dates[i])
+                        st.write("Location:", locations[i])
+                        st.write("Department:", departments[i])
+                        st.write("Incident Type:", incident_types[i])
+                        st.write("Severity:", severities[i])
+
+                        found = True
+
+                if found == False:
+                    st.warning("No matching incidents found.")
+
+        elif option == "Filter Incidents":
+
+            filter_type = st.selectbox(
+                "Filter by",
+                ["Severity", "Department", "Shift", "Incident Type"]
+            )
+
+            value = st.text_input("Enter value").lower()
+
+            if st.button("Apply Filter"):
+
+                for i in range(len(incident_ids)):
+
+                    if filter_type == "Severity":
+                        match = severities[i].lower() == value
+                    elif filter_type == "Department":
+                        match = departments[i].lower() == value
+                    elif filter_type == "Shift":
+                        match = shifts[i].lower() == value
+                    else:
+                        match = incident_types[i].lower() == value
+
+                    if match:
+                        st.write(
+                            incident_ids[i],
+                            "-",
+                            incident_types[i],
+                            "-",
+                            severities[i]
+                        )
+
+        elif option == "Categorise Incidents":
+
+            categories = []
+
+            for incident in incident_types:
+
+                if incident not in categories:
+                    categories.append(incident)
+
+            if len(categories) == 0:
+                st.info("No incidents recorded.")
+            else:
+                for category in categories:
+
+                    count = incident_types.count(category)
+
+                    st.write(
+                        category,
+                        ":",
+                        count,
+                        "incident(s)"
+                    )
+
+        elif option == "Count Incidents":
+
+            st.metric(
+                "Total Incidents",
+                len(incident_ids)
+            )
+
+        elif option == "Analyse Incident Trends":
+
+            if len(incident_ids) == 0:
+                st.info("No incidents available for analysis.")
+            else:
+
+                low = severities.count("Low")
+                medium = severities.count("Medium")
+                high = severities.count("High")
+
+                st.write("Low severity incidents:", low)
+                st.write("Medium severity incidents:", medium)
+                st.write("High severity incidents:", high)
+
+                if high >= medium and high >= low:
+                    st.warning("Most common severity: High")
+                elif medium >= high and medium >= low:
+                    st.info("Most common severity: Medium")
+                else:
+                    st.success("Most common severity: Low")
