@@ -63,6 +63,115 @@ if st.session_state.get("logged_in", False):
         ]
     )
 
+    if module == "Worker Safety":
+
+        st.header("Worker Health and Safety Monitoring")
+
+        worker_id = st.text_input("Worker ID")
+        department = st.text_input("Department")
+        job_role = st.text_input("Job Role")
+        shift = st.selectbox("Shift", ["Day", "Night"])
+        ppe = st.selectbox(
+            "Is PPE compliance satisfactory?",
+            ["Yes", "No"]
+        )
+        training = st.selectbox(
+            "Is safety training up to date?",
+            ["Yes", "No"]
+        )
+        fatigue = st.selectbox(
+            "Enter fatigue level",
+            ["Low", "Medium", "High"]
+        )
+        observations = st.text_area("Enter Safety Observations")
+        near_misses = st.number_input(
+            "Enter Number of Near Misses",
+            min_value=0,
+            step=1
+        )
+        previous_incidents = st.number_input(
+            "Enter Number of Previous Incidents",
+            min_value=0,
+            step=1
+        )
+        risk_level = st.selectbox(
+            "Enter Risk Level",
+            ["Low", "Medium", "High"]
+        )
+
+        if st.button("Assess Worker Safety"):
+
+            st.subheader("Worker Safety Record")
+
+            st.write("Worker ID:", worker_id)
+            st.write("Department:", department)
+            st.write("Job Role:", job_role)
+            st.write("Shift:", shift)
+            st.write("PPE Compliance:", ppe)
+            st.write("Safety Training:", training)
+            st.write("Fatigue Level:", fatigue)
+            st.write("Safety Observations:", observations)
+            st.write("Near Misses:", near_misses)
+            st.write("Previous Incidents:", previous_incidents)
+            st.write("Risk Level:", risk_level)
+
+            warnings = []
+
+            if ppe.lower() == "no":
+                warnings.append(
+                    "PPE compliance is unsatisfactory."
+                )
+
+            if training.lower() == "no":
+                warnings.append(
+                    "Safety training is not up to date."
+                )
+
+            if fatigue.lower() == "high":
+                warnings.append(
+                    "Worker has a high fatigue level."
+                )
+
+            if near_misses > 0:
+                warnings.append(
+                    "Worker has recorded near misses."
+                )
+
+            if previous_incidents > 0:
+                warnings.append(
+                    "Worker has previous safety incidents."
+                )
+
+            if risk_level.lower() == "high":
+                warnings.append(
+                    "Worker has a HIGH risk level."
+                )
+
+            st.subheader("Safety Assessment")
+
+            if len(warnings) > 0:
+
+                st.warning(
+                    "Potentially unsafe conditions detected."
+                )
+
+                for warning in warnings:
+                    st.write("⚠️", warning)
+
+            else:
+
+                st.success(
+                    "No major unsafe conditions detected."
+                )
+
+                st.success(
+                    "Worker is currently considered safe."
+                )
+
+            st.info(
+                "Worker safety monitoring complete."
+            )
+
     if module == "Safety Incidents":
 
         st.header("Safety Incident Database")
