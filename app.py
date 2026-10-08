@@ -20,6 +20,20 @@ causes = []
 corrective_actions = []
 incident_statuses = []
 
+equipment_ids = []
+equipment_types = []
+manufacturers = []
+operating_hours = []
+temperatures = []
+vibrations = []
+fuel_consumptions = []
+brake_statuses = []
+tyre_statuses = []
+engine_statuses = []
+maintenance_statuses = []
+downtimes = []
+availabilities = []
+
 st.title("⛏️ Mining Monitoring System")
 
 username = st.text_input("Username")
