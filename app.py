@@ -359,3 +359,337 @@ if st.session_state.get("logged_in", False):
                     st.info("Most common severity: Medium")
                 else:
                     st.success("Most common severity: Low")
+
+    if module == "Equipment":
+
+        st.header("Equipment Database")
+
+        option = st.selectbox(
+            "Select an option",
+            [
+                "Add Equipment",
+                "View Equipment",
+                "Search Equipment",
+                "Filter Equipment",
+                "Count Equipment",
+                "Check Equipment Status"
+            ]
+        )
+
+        if option == "Add Equipment":
+
+            equipment_id = st.text_input("Equipment ID")
+            equipment_type = st.selectbox(
+                "Equipment Type",
+                [
+                    "Haul Truck",
+                    "Loader",
+                    "Excavator",
+                    "Drilling Machine",
+                    "Bulldozer",
+                    "Scraper Winch",
+                    "Crusher",
+                    "Conveyor"
+                ]
+            )
+            manufacturer = st.text_input("Manufacturer")
+            operating_hours = st.number_input(
+                "Operating Hours",
+                min_value=0.0,
+                step=1.0
+            )
+            temperature = st.number_input(
+                "Temperature",
+                min_value=0.0,
+                step=1.0
+            )
+            vibration = st.number_input(
+                "Vibration",
+                min_value=0.0,
+                step=0.1
+            )
+            fuel_consumption = st.number_input(
+                "Fuel Consumption",
+                min_value=0.0,
+                step=0.1
+            )
+            brake_status = st.selectbox(
+                "Brake Status",
+                ["Good", "Faulty"]
+            )
+            tyre_status = st.selectbox(
+                "Tyre Status",
+                ["Good", "Worn"]
+            )
+            engine_status = st.selectbox(
+                "Engine Status",
+                ["Good", "Faulty"]
+            )
+            maintenance_status = st.selectbox(
+                "Maintenance Status",
+                ["Up to date", "Overdue"]
+            )
+            downtime = st.number_input(
+                "Downtime Hours",
+                min_value=0.0,
+                step=1.0
+            )
+            availability = st.number_input(
+                "Availability Percentage",
+                min_value=0.0,
+                max_value=100.0,
+                step=1.0
+            )
+
+            if st.button("Save Equipment"):
+
+                equipment_ids.append(equipment_id)
+                equipment_types.append(equipment_type)
+                manufacturers.append(manufacturer)
+                operating_hours.append(operating_hours)
+                temperatures.append(temperature)
+                vibrations.append(vibration)
+                fuel_consumptions.append(fuel_consumption)
+                brake_statuses.append(brake_status)
+                tyre_statuses.append(tyre_status)
+                engine_statuses.append(engine_status)
+                maintenance_statuses.append(maintenance_status)
+                downtimes.append(downtime)
+                availabilities.append(availability)
+
+                st.success("Equipment successfully added.")
+
+                if brake_status.lower() == "faulty":
+                    st.warning("Brake fault detected.")
+
+                if tyre_status.lower() == "worn":
+                    st.warning("Tyres need attention.")
+
+                if engine_status.lower() == "faulty":
+                    st.warning("Engine fault detected.")
+
+                if maintenance_status.lower() == "overdue":
+                    st.warning("Maintenance is overdue.")
+
+        elif option == "View Equipment":
+
+            if len(equipment_ids) == 0:
+                st.info("No equipment recorded.")
+            else:
+
+                for i in range(len(equipment_ids)):
+
+                    st.subheader(
+                        "Equipment " + str(i + 1)
+                    )
+
+                    st.write(
+                        "Equipment ID:",
+                        equipment_ids[i]
+                    )
+                    st.write(
+                        "Equipment Type:",
+                        equipment_types[i]
+                    )
+                    st.write(
+                        "Manufacturer:",
+                        manufacturers[i]
+                    )
+                    st.write(
+                        "Operating Hours:",
+                        operating_hours[i]
+                    )
+                    st.write(
+                        "Temperature:",
+                        temperatures[i]
+                    )
+                    st.write(
+                        "Vibration:",
+                        vibrations[i]
+                    )
+                    st.write(
+                        "Fuel Consumption:",
+                        fuel_consumptions[i]
+                    )
+                    st.write(
+                        "Brake Status:",
+                        brake_statuses[i]
+                    )
+                    st.write(
+                        "Tyre Status:",
+                        tyre_statuses[i]
+                    )
+                    st.write(
+                        "Engine Status:",
+                        engine_statuses[i]
+                    )
+                    st.write(
+                        "Maintenance Status:",
+                        maintenance_statuses[i]
+                    )
+                    st.write(
+                        "Downtime:",
+                        downtimes[i]
+                    )
+                    st.write(
+                        "Availability:",
+                        availabilities[i],
+                        "%"
+                    )
+
+        elif option == "Search Equipment":
+
+            search = st.text_input(
+                "Enter Equipment ID, Type or Manufacturer"
+            ).lower()
+
+            if st.button("Search Equipment"):
+
+                found = False
+
+                for i in range(len(equipment_ids)):
+
+                    if (
+                        search in equipment_ids[i].lower()
+                        or search in equipment_types[i].lower()
+                        or search in manufacturers[i].lower()
+                    ):
+
+                        st.subheader(
+                            "Equipment " + equipment_ids[i]
+                        )
+
+                        st.write(
+                            "Equipment Type:",
+                            equipment_types[i]
+                        )
+                        st.write(
+                            "Manufacturer:",
+                            manufacturers[i]
+                        )
+                        st.write(
+                            "Operating Hours:",
+                            operating_hours[i]
+                        )
+                        st.write(
+                            "Availability:",
+                            availabilities[i],
+                            "%"
+                        )
+
+                        found = True
+
+                if found == False:
+                    st.warning(
+                        "No matching equipment found."
+                    )
+
+        elif option == "Filter Equipment":
+
+            filter_type = st.selectbox(
+                "Filter by",
+                [
+                    "Equipment Type",
+                    "Manufacturer",
+                    "Brake Status",
+                    "Engine Status",
+                    "Maintenance Status"
+                ]
+            )
+
+            value = st.text_input(
+                "Enter filter value"
+            ).lower()
+
+            if st.button("Apply Filter"):
+
+                found = False
+
+                for i in range(len(equipment_ids)):
+
+                    if filter_type == "Equipment Type":
+                        match = (
+                            equipment_types[i].lower()
+                            == value
+                        )
+
+                    elif filter_type == "Manufacturer":
+                        match = (
+                            manufacturers[i].lower()
+                            == value
+                        )
+
+                    elif filter_type == "Brake Status":
+                        match = (
+                            brake_statuses[i].lower()
+                            == value
+                        )
+
+                    elif filter_type == "Engine Status":
+                        match = (
+                            engine_statuses[i].lower()
+                            == value
+                        )
+
+                    else:
+                        match = (
+                            maintenance_statuses[i].lower()
+                            == value
+                        )
+
+                    if match:
+
+                        st.write(
+                            equipment_ids[i],
+                            "-",
+                            equipment_types[i],
+                            "-",
+                            availabilities[i],
+                            "%"
+                        )
+
+                        found = True
+
+                if found == False:
+                    st.warning(
+                        "No equipment matches the filter."
+                    )
+
+        elif option == "Count Equipment":
+
+            st.metric(
+                "Total Equipment",
+                len(equipment_ids)
+            )
+
+        elif option == "Check Equipment Status":
+
+            if len(equipment_ids) == 0:
+
+                st.info("No equipment recorded.")
+
+            else:
+
+                for i in range(len(equipment_ids)):
+
+                    st.subheader(
+                        "Equipment ID: "
+                        + equipment_ids[i]
+                    )
+
+                    if (
+                        brake_statuses[i].lower() == "faulty"
+                        or tyre_statuses[i].lower() == "worn"
+                        or engine_statuses[i].lower() == "faulty"
+                        or maintenance_statuses[i].lower() == "overdue"
+                    ):
+
+                        st.warning(
+                            "Status: ATTENTION REQUIRED"
+                        )
+
+                    else:
+
+                        st.success(
+                            "Status: Equipment is OK"
+                        )
