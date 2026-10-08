@@ -23,7 +23,7 @@ incident_statuses = []
 equipment_ids = []
 equipment_types = []
 manufacturers = []
-operating_hours = []
+operating_Hours = []
 temperatures = []
 vibrations = []
 fuel_consumptions = []
@@ -460,7 +460,7 @@ if st.session_state.get("logged_in", False):
                 equipment_ids.append(equipment_id)
                 equipment_types.append(equipment_type)
                 manufacturers.append(manufacturer)
-                operating_hours.append(operating_hours)
+                operating_Hours.append(operating_hours)
                 temperatures.append(temperature)
                 vibrations.append(vibration)
                 fuel_consumptions.append(fuel_consumption)
