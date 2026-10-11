@@ -67,6 +67,7 @@ permissions = {
         "Dashboard",
         "Worker Safety",
         "Safety Incidents",
+        "Equipment database",
         "Equipment Monitoring",
         "Maintenance",
         "Risk Assessment",
@@ -84,6 +85,7 @@ permissions = {
         "Dashboard",
         "Worker Safety",
         "Safety Incidents",
+        "Equipment database",
         "Equipment Monitoring",
         "Maintenance",
         "Risk Assessment",
@@ -91,6 +93,7 @@ permissions = {
     ],
     "Maintenance Engineer": [
         "Dashboard",
+        "Equipment database",
         "Equipment Monitoring",
         "Maintenance",
         "Reports"
@@ -99,6 +102,7 @@ permissions = {
         "Dashboard",
         "Worker Safety",
         "Safety Incidents",
+        "Equipment database",
         "Equipment Monitoring",
         "Maintenance",
         "Risk Assessment",
@@ -414,7 +418,7 @@ if st.session_state.get("logged_in", False):
                 else:
                     st.success("Most common severity: Low")
 
-    if module == "Equipment":
+    if module == "Equipment database":
 
         st.header("Equipment Database")
 
@@ -747,126 +751,4 @@ if st.session_state.get("logged_in", False):
                         st.success(
                             "Status: Equipment is OK"
                         )
-
-def monitor_equipment():
-
-    equipment_id = input("Enter Equipment ID: ")
-    temperature = float(input("Enter Temperature (°C): "))
-    vibration = float(input("Enter Vibration (mm/s): "))
-
-    print("\nEquipment ID:", equipment_id)
-
-    if temperature < 80:
-        temperature_status = "NORMAL"
-        print("NORMAL: Equipment temperature is within defined monitoring limits.")
-
-    elif temperature <= 100:
-        temperature_status = "WARNING"
-        print("WARNING: Equipment temperature approaching predefined threshold.")
-
-    else:
-        temperature_status = "CRITICAL"
-        print("CRITICAL: Equipment temperature exceeds predefined threshold.")
-
-    if vibration < 5:
-        vibration_status = "NORMAL"
-        print("NORMAL: Equipment vibration is within defined monitoring limits.")
-
-    elif vibration <= 8:
-        vibration_status = "WARNING"
-        print("WARNING: Equipment vibration approaching predefined threshold.")
-
-    else:
-        vibration_status = "CRITICAL"
-        print("CRITICAL: Equipment vibration exceeds predefined threshold.")
-
-    if temperature_status == "CRITICAL" or vibration_status == "CRITICAL":
-        print("Inspection required.")
-
-    elif temperature_status == "WARNING" or vibration_status == "WARNING":
-        print("Monitoring required.")
-
-    else:
-        print("Equipment operating normally.")
-
-
-monitor_equipment()
-equipment_id = input("Enter Equipment ID: ")
-equipment_type = input("Enter Equipment Type: ")
-operating_time = float(input("Enter Operating Time (hours): "))
-downtime = float(input("Enter Downtime (hours): "))
-repeated_alerts = int(input("Enter Number of Repeated Alerts: "))
-maintenance_status = input("Enter Maintenance Status (Normal/Due/Overdue/Under Maintenance): ")
-
-availability = (operating_time / (operating_time + downtime)) * 100
-
-print("\nEquipment ID:", equipment_id)
-print("Equipment Type:", equipment_type)
-print("Operating Time:", operating_time, "hours")
-print("Downtime:", downtime, "hours")
-print("Availability:", round(availability, 2), "%")
-
-if maintenance_status.lower() == "due":
-    print("STATUS: Equipment due for maintenance.")
-
-elif maintenance_status.lower() == "overdue":
-    print("STATUS: Equipment is overdue for maintenance.")
-
-elif maintenance_status.lower() == "under maintenance":
-    print("STATUS: Equipment is under maintenance.")
-
-else:
-    print("STATUS: Maintenance is up to date.")
-
-if downtime > 20:
-    print("WARNING: Equipment has excessive downtime.")
-
-if repeated_alerts >= 3:
-    print("WARNING: Equipment has repeated alerts.")
-
-if availability < 80:
-    print("WARNING: Equipment has low availability.")
-
-if (maintenance_status.lower() == "normal"
-        and downtime <= 20
-        and repeated_alerts < 3
-        and availability >= 80):
-
-    print("Equipment is operating normally.")
-def risk_assessment():
-
-    hazard = input("Enter Hazard: ")
-    likelihood = int(input("Enter Likelihood (1-5): "))
-    consequence = int(input("Enter Consequence (1-5): "))
-
-    risk_score = likelihood * consequence
-
-    print("\nHazard:", hazard)
-    print("Likelihood:", likelihood)
-    print("Consequence:", consequence)
-    print("Risk Score:", risk_score)
-
-    if risk_score <= 4:
-        classification = "Low"
-
-    elif risk_score <= 9:
-        classification = "Medium"
-
-    elif risk_score <= 16:
-        classification = "High"
-
-    else:
-        classification = "Critical"
-
-    print("Risk Classification:", classification)
-
-    if classification == "High":
-        print("WARNING: High risk identified. Action is required.")
-
-    elif classification == "Critical":
-        print("WARNING: Critical risk identified. Immediate action is required.")
-
-
-risk_assessment()
-
 
