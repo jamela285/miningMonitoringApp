@@ -40,9 +40,7 @@ consequence=[]
 
 st.title("⛏️ Mining Monitoring System")
 
-
-
-    username = st.text_input("Username")
+username = st.text_input("Username")
 password = st.text_input("Password", type="password")
 
 if st.button("LOGIN"):
