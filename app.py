@@ -40,7 +40,9 @@ consequence=[]
 
 st.title("⛏️ Mining Monitoring System")
 
-username = st.text_input("Username")
+
+
+    username = st.text_input("Username")
 password = st.text_input("Password", type="password")
 
 if st.button("LOGIN"):
@@ -62,23 +64,59 @@ if st.button("LOGIN"):
     else:
         st.error("Invalid username or password")
 
-if st.session_state.get("logged_in", False):
+permissions = {
+    "Administrator": [
+        "Dashboard",
+        "Worker Safety",
+        "Safety Incidents",
+        "Equipment Monitoring",
+        "Maintenance",
+        "Risk Assessment",
+        "Reports",
+        "Manage Users"
+    ],
+    "Safety Officer": [
+        "Dashboard",
+        "Worker Safety",
+        "Safety Incidents",
+        "Risk Assessment",
+        "Reports"
+    ],
+    "Mining Engineer": [
+        "Dashboard",
+        "Worker Safety",
+        "Safety Incidents",
+        "Equipment Monitoring",
+        "Maintenance",
+        "Risk Assessment",
+        "Reports"
+    ],
+    "Maintenance Engineer": [
+        "Dashboard",
+        "Equipment Monitoring",
+        "Maintenance",
+        "Reports"
+    ],
+    "Manager": [
+        "Dashboard",
+        "Worker Safety",
+        "Safety Incidents",
+        "Equipment Monitoring",
+        "Maintenance",
+        "Risk Assessment",
+        "Reports"
+    ]
+}
 
+if st.session_state.get("logged_in", False):
     st.success("Login successful")
     st.write("Role:", st.session_state.role)
 
-    module = st.selectbox(
+    allowed_modules = permissions[st.session_state.role]
+
+    module = st.sidebar.selectbox(
         "Select Module",
-        [
-            "Dashboard",
-            "Worker Safety",
-            "Safety Incidents",
-            "Equipment",
-            "Equipment Monitoring",
-            "Maintenance",
-            "Risk Assessment",
-            "Alerts"
-        ]
+        allowed_modules
     )
 
     if module == "Worker Safety":
