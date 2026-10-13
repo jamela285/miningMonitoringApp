@@ -872,76 +872,91 @@ if st.session_state.get("logged_in", False):
                 st.success("Equipment operating normally.")
 
     if module == "Maintenance":
-         st.title("Maintenance Management")
+        st.title("Maintenance Management")
 
-         st.text_input("Enter Equipment ID")
-         equipment_type = st.selectbox(
-        "Enter Equipment Type",
-        ["Haul Truck", "Loader", "Excavator", "Drill",
-         "Bulldozer", "Crusher", "Conveyor", "Other"]
+        equipment_id = st.text_input(
+            "Enter Equipment ID",
+            key="maintenance_equipment_id"
         )
 
-       operating_time = st.number_input(
-        "Operating Time (hours)", min_value=0.0
-       )
-       downtime = st.number_input(
-        "Downtime (hours)", min_value=0.0
-       )
-      repeated_alerts = st.number_input(
-        "Number of Repeated Alerts", min_value=0, step=1
-      )
+        equipment_type = st.selectbox(
+            "Enter Equipment Type",
+            ["Haul Truck", "Loader", "Excavator", "Drill",
+             "Bulldozer", "Crusher", "Conveyor", "Other"],
+            key="maintenance_equipment_type"
+        )
 
-       maintenance_status = st.selectbox(
-        "Maintenance Status",
-        ["Normal", "Due", "Overdue", "Under Maintenance"]
-       )
+        operating_time = st.number_input(
+            "Operating Time (hours)",
+            min_value=0.0,
+            key="maintenance_operating_time"
+        )
 
-       if st.button("Check Maintenance Status"):
+        downtime = st.number_input(
+            "Downtime (hours)",
+            min_value=0.0,
+            key="maintenance_downtime"
+        )
 
-        if not equipment_id.strip():
-            st.error("Please enter an Equipment ID.")
+        repeated_alerts = st.number_input(
+            "Number of Repeated Alerts",
+            min_value=0,
+            step=1,
+            key="maintenance_repeated_alerts"
+        )
 
-        elif operating_time + downtime == 0:
-            st.error("Operating time and downtime cannot both be zero.")
+        maintenance_status = st.selectbox(
+            "Maintenance Status",
+            ["Normal", "Due", "Overdue", "Under Maintenance"],
+            key="maintenance_status"
+        )
 
-        else:
-            availability = (
-                operating_time / (operating_time + downtime)
-            ) * 100
+        if st.button("Check Maintenance Status"):
+            if not equipment_id.strip():
+                st.error("Please enter an Equipment ID.")
 
-            st.subheader("Maintenance Report")
-
-            st.write("Equipment ID:", equipment_id)
-            st.write("Equipment Type:", equipment_type)
-            st.write("Operating Time:", operating_time, "hours")
-            st.write("Downtime:", downtime, "hours")
-            st.write("Availability:", round(availability, 2), "%")
-
-            if maintenance_status == "Due":
-                st.warning("Equipment is due for maintenance.")
-
-            elif maintenance_status == "Overdue":
-                st.error("Equipment is overdue for maintenance.")
-
-            elif maintenance_status == "Under Maintenance":
-                st.info("Equipment is under maintenance.")
+            elif operating_time + downtime == 0:
+                st.error("Operating time and downtime cannot both be zero.")
 
             else:
-                st.success("Maintenance is up to date.")
+                availability = (
+                    operating_time / (operating_time + downtime)
+                ) * 100
 
-            if downtime > 20:
-                st.warning("Equipment has excessive downtime.")
+                st.subheader("Maintenance Report")
+                st.write("Equipment ID:", equipment_id)
+                st.write("Equipment Type:", equipment_type)
+                st.write("Operating Time:", operating_time, "hours")
+                st.write("Downtime:", downtime, "hours")
+                st.write("Availability:", round(availability, 2), "%")
 
-            if repeated_alerts >= 3:
-                st.warning("Equipment has repeated alerts.")
+                if maintenance_status == "Due":
+                    st.warning("Equipment is due for maintenance.")
 
-            if availability < 80:
-                st.warning("Equipment has low availability.")
+                elif maintenance_status == "Overdue":
+                    st.error("Equipment is overdue for maintenance.")
 
-            if (maintenance_status == "Normal"
+                elif maintenance_status == "Under Maintenance":
+                    st.info("Equipment is under maintenance.")
+
+                else:
+                    st.success("Maintenance is up to date.")
+
+                if downtime > 20:
+                    st.warning("Equipment has excessive downtime.")
+
+                if repeated_alerts >= 3:
+                    st.warning("Equipment has repeated alerts.")
+
+                if availability < 80:
+                    st.warning("Equipment has low availability.")
+
+                if (
+                    maintenance_status == "Normal"
                     and downtime <= 20
                     and repeated_alerts < 3
-                    and availability >= 80):
-                st.success("Equipment is operating normally.")
+                    and availability >= 80
+                ):
+                    st.success("Equipment is operating normally.")
 
     
