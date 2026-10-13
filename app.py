@@ -32,6 +32,8 @@ maintenance_statuses = []
 downtimes = []
 availabilities = []
 
+near_misses_records = [] 
+
 
 st.title("Mining Monitoring Application")
 
@@ -152,7 +154,10 @@ if st.session_state.get("logged_in", False):
             ["Low", "Medium", "High"]
         )
 
+
         if st.button("Assess Worker Safety"):
+
+            near_misses_records.append(near_misses)
 
             st.subheader("Worker Safety Record")
 
@@ -969,7 +974,7 @@ if module == "Dashboard":
 
     col1.metric("Total Workers", 200)
     col2.metric("Total Safety Incidents", len(incident_ids))
-    col3.metric("Near Misses", 0)
+    col3.metric("Near Misses", sum(near_misses_records))
 
     col4.metric("High-Risk Observations", 0)
     col5.metric("PPE Compliance", "N/A")
