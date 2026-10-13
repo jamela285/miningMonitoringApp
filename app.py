@@ -751,4 +751,57 @@ if st.session_state.get("logged_in", False):
                         st.success(
                             "Status: Equipment is OK"
                         )
+    if module == "Risk Assessment":
 
+        st.header("Mining Risk Assessment")
+
+        hazard = st.text_input("Enter Hazard")
+
+        likelihood = st.selectbox(
+            "Likelihood (1-5)",
+            [1, 2, 3, 4, 5]
+        )
+
+        consequence = st.selectbox(
+            "Consequence (1-5)",
+            [1, 2, 3, 4, 5]
+        )
+
+        if st.button("Assess Risk"):
+
+            risk_score = likelihood * consequence
+
+            st.subheader("Risk Assessment Results")
+
+            st.write("Hazard:", hazard)
+            st.write("Likelihood:", likelihood)
+            st.write("Consequence:", consequence)
+            st.metric("Risk Score", risk_score)
+
+            if risk_score <= 4:
+                classification = "Low"
+            elif risk_score <= 9:
+                classification = "Medium"
+            elif risk_score <= 16:
+                classification = "High"
+            else:
+                classification = "Critical"
+
+            st.write("Risk Classification:", classification)
+
+            if classification == "High":
+                st.warning(
+                    "High risk identified. Action is required."
+                )
+            elif classification == "Critical":
+                st.error(
+                    "Critical risk identified. Immediate action is required."
+                )
+            elif classification == "Medium":
+                st.info(
+                    "Medium risk identified. Appropriate control measures are required."
+                )
+            else:
+                st.success(
+                    "Low risk identified. Continue monitoring the hazard."
+                )
