@@ -67,7 +67,7 @@ permissions = {
         "Equipment Monitoring",
         "Maintenance",
         "Risk Assessment",
-        "Alerts & Notifications"
+        "Alerts & Notifications",
         "Manage Users"
     ],
     "Safety Officer": [
