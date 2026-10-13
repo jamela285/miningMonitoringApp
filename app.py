@@ -874,29 +874,29 @@ if st.session_state.get("logged_in", False):
     if module == "Maintenance":
          st.title("Maintenance Management")
 
-    st.text_input("Enter Equipment ID")
-    equipment_type = st.selectbox(
+         st.text_input("Enter Equipment ID")
+         equipment_type = st.selectbox(
         "Enter Equipment Type",
         ["Haul Truck", "Loader", "Excavator", "Drill",
          "Bulldozer", "Crusher", "Conveyor", "Other"]
-    )
+        )
 
-    operating_time = st.number_input(
+       operating_time = st.number_input(
         "Operating Time (hours)", min_value=0.0
-    )
-    downtime = st.number_input(
+       )
+       downtime = st.number_input(
         "Downtime (hours)", min_value=0.0
-    )
-    repeated_alerts = st.number_input(
+       )
+      repeated_alerts = st.number_input(
         "Number of Repeated Alerts", min_value=0, step=1
-    )
+      )
 
-    maintenance_status = st.selectbox(
+       maintenance_status = st.selectbox(
         "Maintenance Status",
         ["Normal", "Due", "Overdue", "Under Maintenance"]
-    )
+       )
 
-    if st.button("Check Maintenance Status"):
+       if st.button("Check Maintenance Status"):
 
         if not equipment_id.strip():
             st.error("Please enter an Equipment ID.")
