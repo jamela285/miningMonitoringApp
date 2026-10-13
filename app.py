@@ -118,7 +118,7 @@ if st.session_state.get("logged_in", False):
         allowed_modules
     )
 
-    if module == "Dashboard":
+if module == "Dashboard":
     st.header("Mining Monitoring Dashboard")
 
     col1, col2, col3 = st.columns(3)
