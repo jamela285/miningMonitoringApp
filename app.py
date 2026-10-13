@@ -32,7 +32,6 @@ maintenance_statuses = []
 downtimes = []
 availabilities = []
 
-near_misses_records = [] 
 
 
 st.title("Mining Monitoring Application")
@@ -129,7 +128,7 @@ if st.session_state.get("logged_in", False):
 
         col1.metric("Total Workers", 200)
         col2.metric("Total Safety Incidents", len(incident_ids))
-        col3.metric("Near Misses", sum(st.session_state.near_misses_records))
+        col3.metric("Near Misses", 0)
 
         col4.metric("High-Risk Observations", 0)
         col5.metric("PPE Compliance", "N/A")
