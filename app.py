@@ -1,44 +1,40 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Mining Monitoring System",
-    page_icon="⛏️",
+    page_title="Mining Monitoring Application",
     layout="wide"
 )
+incident_ids = st.session_state.setdefault("incident_ids", [])
+dates = st.session_state.setdefault("dates", [])
+times = st.session_state.setdefault("times", [])
+shifts = st.session_state.setdefault("shifts", [])
+locations = st.session_state.setdefault("locations", [])
+departments = st.session_state.setdefault("departments", [])
+incident_types = st.session_state.setdefault("incident_types", [])
+severities = st.session_state.setdefault("severities", [])
+injury_statuses = st.session_state.setdefault("injury_statuses", [])
+lost_time_injuries = st.session_state.setdefault("lost_time_injuries", [])
+causes = st.session_state.setdefault("causes", [])
+corrective_actions = st.session_state.setdefault("corrective_actions", [])
+incident_statuses = st.session_state.setdefault("incident_statuses", [])
 
-incident_ids = []
-dates = []
-times = []
-shifts = []
-locations = []
-departments = []
-incident_types = []
-severities = []
-injury_statuses = []
-lost_time_injuries = []
-causes = []
-corrective_actions = []
-incident_statuses = []
-
-equipment_ids = []
-equipment_types = []
-manufacturers = []
-operating_Hours = []
-temperatures = []
-vibrations = []
-fuel_consumptions = []
-brake_statuses = []
-tyre_statuses = []
-engine_statuses = []
-maintenance_statuses = []
-downtimes = []
-availabilities = []
-hazard= []
-likelihood=[]
-consequence=[]
+equipment_ids = st.session_state.setdefault("equipment_ids", [])
+equipment_types = st.session_state.setdefault("equipment_types", [])
+manufacturers = st.session_state.setdefault("manufacturers", [])
+operating_Hours = st.session_state.setdefault("operating_Hours", [])
+temperatures = st.session_state.setdefault("temperatures", [])
+vibrations = st.session_state.setdefault("vibrations", [])
+fuel_consumptions = st.session_state.setdefault("fuel_consumptions", [])
+brake_statuses = st.session_state.setdefault("brake_statuses", [])
+tyre_statuses = st.session_state.setdefault("tyre_statuses", [])
+engine_statuses = st.session_state.setdefault("engine_statuses", [])
+maintenance_statuses = st.session_state.setdefault("maintenance_statuses", [])
+downtimes = st.session_state.setdefault("downtimes", [])
+availabilities = st.session_state.setdefault("availabilities", [])
 
 
-st.title("⛏️ Mining Monitoring System")
+
+st.title("Mining Monitoring Application")
 
 username = st.text_input("Username")
 password = st.text_input("Password", type="password")
@@ -71,7 +67,7 @@ permissions = {
         "Equipment Monitoring",
         "Maintenance",
         "Risk Assessment",
-        "Reports",
+        "Alerts & Notifications"
         "Manage Users"
     ],
     "Safety Officer": [
@@ -79,7 +75,7 @@ permissions = {
         "Worker Safety",
         "Safety Incidents",
         "Risk Assessment",
-        "Reports"
+        "Alerts & Notifications"
     ],
     "Mining Engineer": [
         "Dashboard",
@@ -89,14 +85,14 @@ permissions = {
         "Equipment Monitoring",
         "Maintenance",
         "Risk Assessment",
-        "Reports"
+        "Alerts & Notifications"
     ],
     "Maintenance Engineer": [
         "Dashboard",
         "Equipment database",
         "Equipment Monitoring",
         "Maintenance",
-        "Reports"
+        "Alerts & Notifications"
     ],
     "Manager": [
         "Dashboard",
@@ -106,7 +102,7 @@ permissions = {
         "Equipment Monitoring",
         "Maintenance",
         "Risk Assessment",
-        "Reports"
+        "Alerts & Notifications"
     ]
 }
 
@@ -948,5 +944,124 @@ if st.session_state.get("logged_in", False):
                     and repeated_alerts < 3
                     and availability >= 80):
                 st.success("Equipment is operating normally.")
-    
+
+    if module == "Alerts & Notifications":
+        st.header("Alerts & Notifications")
+
+        alerts = []
+
+        for i in range(len(equipment_ids)):
+
+            equipment_id = equipment_ids[i]
+
+            if temperatures[i] > 100:
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Equipment Monitoring",
+                    "Severity": "Critical",
+                    "Alert": "Temperature exceeds 100°C",
+                    "Recommended Action": "Inspect equipment immediately"
+                })
+
+            elif temperatures[i] >= 80:
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Equipment Monitoring",
+                    "Severity": "Warning",
+                    "Alert": "High equipment temperature",
+                    "Recommended Action": "Monitor equipment"
+                })
+
+            if vibrations[i] > 8:
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Equipment Monitoring",
+                    "Severity": "Critical",
+                    "Alert": "Vibration exceeds 8 mm/s",
+                    "Recommended Action": "Inspect equipment"
+                })
+
+            elif vibrations[i] >= 5:
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Equipment Monitoring",
+                    "Severity": "Warning",
+                    "Alert": "High equipment vibration",
+                    "Recommended Action": "Monitor equipment"
+                })
+
+            if brake_statuses[i] == "Faulty":
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Equipment Database",
+                    "Severity": "Critical",
+                    "Alert": "Brake fault detected",
+                    "Recommended Action": "Inspect brakes"
+                })
+
+            if tyre_statuses[i] == "Worn":
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Equipment Database",
+                    "Severity": "Warning",
+                    "Alert": "Tyres need attention",
+                    "Recommended Action": "Inspect tyres"
+                })
+
+            if engine_statuses[i] == "Faulty":
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Equipment Database",
+                    "Severity": "Critical",
+                    "Alert": "Engine fault detected",
+                    "Recommended Action": "Inspect engine"
+                })
+
+            if maintenance_statuses[i] == "Overdue":
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Maintenance",
+                    "Severity": "Warning",
+                    "Alert": "Maintenance is overdue",
+                    "Recommended Action": "Arrange maintenance"
+                })
+
+            if downtimes[i] > 20:
+                alerts.append({
+                    "Equipment ID": equipment_id,
+                    "Module": "Maintenance",
+                    "Severity": "Warning",
+                    "Alert": "Excessive equipment downtime",
+                    "Recommended Action": "Investigate downtime"
+                })
+
+        critical_count = sum(
+            1 for alert in alerts
+            if alert["Severity"] == "Critical"
+        )
+
+        warning_count = sum(
+            1 for alert in alerts
+            if alert["Severity"] == "Warning"
+        )
+
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric("Total Alerts", len(alerts))
+        col2.metric("Critical Alerts", critical_count)
+        col3.metric("Warnings", warning_count)
+
+        st.subheader("All Detected Alerts")
+
+        if alerts:
+            st.dataframe(alerts, use_container_width=True)
+
+            if critical_count > 0:
+                st.error("Critical alerts require immediate attention.")
+
+            if warning_count > 0:
+                st.warning("Some conditions require monitoring or corrective action.")
+
+        else:
+            st.success("No alerts detected from the recorded equipment.")
 
