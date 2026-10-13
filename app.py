@@ -874,7 +874,7 @@ if st.session_state.get("logged_in", False):
     if module == "Maintenance":
          st.title("Maintenance Management")
 
-    equipment_id = st.text_input("Enter Equipment ID", key="maintenance_equipment_id")
+    st.text_input("Enter Equipment ID")
     equipment_type = st.selectbox(
         "Enter Equipment Type",
         ["Haul Truck", "Loader", "Excavator", "Drill",
