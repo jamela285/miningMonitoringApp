@@ -959,4 +959,13 @@ if st.session_state.get("logged_in", False):
                 ):
                     st.success("Equipment is operating normally.")
 
+    if module == "Dashboard":
+        st.header("Mining Monitoring Dashboard")
+
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric("Total Workers", 200)
+        col2.metric("Total Safety Incidents", len(incident_ids))
+        col3.metric("Total Equipment", len(equipment_ids))
+
     
