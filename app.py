@@ -959,13 +959,26 @@ if st.session_state.get("logged_in", False):
                 ):
                     st.success("Equipment is operating normally.")
 
-    if module == "Dashboard":
-        st.header("Mining Monitoring Dashboard")
+if module == "Dashboard":
+    st.header("Mining Monitoring Dashboard")
 
-        col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
+    col7, col8, col9 = st.columns(3)
+    col10, col11 = st.columns(2)
 
-        col1.metric("Total Workers", 200)
-        col2.metric("Total Safety Incidents", len(incident_ids))
-        col3.metric("Total Equipment", len(equipment_ids))
+    col1.metric("Total Workers", 200)
+    col2.metric("Total Safety Incidents", len(incident_ids))
+    col3.metric("Near Misses", 0)
 
+    col4.metric("High-Risk Observations", 0)
+    col5.metric("PPE Compliance", "N/A")
+    col6.metric("Total Equipment", len(equipment_ids))
+
+    col7.metric("Equipment Available", 0)
+    col8.metric("Equipment Under Maintenance", 0)
+    col9.metric("Equipment Alerts", 0)
+
+    col10.metric("Average Equipment Availability", "N/A")
+    col11.metric("Critical Equipment Alerts", 0)
     
