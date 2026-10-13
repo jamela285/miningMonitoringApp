@@ -805,3 +805,73 @@ if st.session_state.get("logged_in", False):
                 st.success(
                     "Low risk identified. Continue monitoring the hazard."
                 )
+
+    if module == "Equipment Monitoring":
+
+        st.header("Equipment Condition Monitoring")
+
+        equipment_id = st.text_input("Enter Equipment ID")
+
+        temperature = st.number_input(
+            "Enter Temperature (°C)",
+            min_value=0.0,
+            step=1.0
+        )
+
+        vibration = st.number_input(
+            "Enter Vibration (mm/s)",
+            min_value=0.0,
+            step=0.1
+        )
+
+        if st.button("Monitor Equipment"):
+
+            st.subheader("Monitoring Results")
+            st.write("Equipment ID:", equipment_id)
+
+            if temperature < 80:
+                temperature_status = "NORMAL"
+                st.success(
+                    "NORMAL: Equipment temperature is within  monitoring limits."
+                )
+
+            elif temperature <= 100:
+                temperature_status = "WARNING"
+                st.warning(
+                    "WARNING: Equipment temperature is approaching the threshold."
+                )
+
+            else:
+                temperature_status = "CRITICAL"
+                st.error(
+                    "CRITICAL: Equipment temperature exceeds the threshold."
+                )
+
+            if vibration < 5:
+                vibration_status = "NORMAL"
+                st.success(
+                    "NORMAL: Equipment vibration is within monitoring limits."
+                )
+
+            elif vibration <= 8:
+                vibration_status = "WARNING"
+                st.warning(
+                    "WARNING: Equipment vibration is approaching the threshold."
+                )
+
+            else:
+                vibration_status = "CRITICAL"
+                st.error(
+                    "CRITICAL: Equipment vibration exceeds the threshold."
+                )
+
+            st.subheader("Overall Equipment Status")
+
+            if temperature_status == "CRITICAL" or vibration_status == "CRITICAL":
+                st.error("Inspection required.")
+
+            elif temperature_status == "WARNING" or vibration_status == "WARNING":
+                st.warning("Monitoring required.")
+
+            else:
+                st.success("Equipment operating normally.")
