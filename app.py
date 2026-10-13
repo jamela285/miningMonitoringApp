@@ -876,8 +876,8 @@ if st.session_state.get("logged_in", False):
             else:
                 st.success("Equipment operating normally.")
 
-if module == "Maintenance":
-    st.title("Maintenance Management")
+    if module == "Maintenance":
+         st.title("Maintenance Management")
 
     equipment_id = st.text_input("Enter Equipment ID")
     equipment_type = st.selectbox(
