@@ -3,7 +3,6 @@ import streamlit as st
 import sqlite3
 import hashlib
 
-
 st.set_page_config(
     page_title="Mining Monitoring application",
 )
