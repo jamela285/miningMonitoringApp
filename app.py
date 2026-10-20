@@ -5,9 +5,7 @@ import hashlib
 
 
 st.set_page_config(
-    page_title="Mining Management System",
-    page_icon="⛏️",
-    layout="wide"
+    page_title="Mining Monitoring application",
 )
 
 conn = sqlite3.connect("mining_users.db")
@@ -141,6 +139,7 @@ def signup_page():
     role = st.selectbox(
         "Select Your Role",
         [
+            "administrator",
             "Safety Officer",
             "Mining Engineer",
             "Maintenance Engineer",
