@@ -1,62 +1,35 @@
+
 import streamlit as st
+import sqlite3
+import hashlib
+
 
 st.set_page_config(
-    page_title="Mining Monitoring Application",
+    page_title="Mining Management System",
+    page_icon="⛏️",
     layout="wide"
 )
-incident_ids = []
-dates = []
-times = []
-shifts = []
-locations = []
-departments = []
-incident_types = []
-severities = []
-injury_statuses = []
-lost_time_injuries = []
-causes = []
-corrective_actions = []
-incident_statuses = []
 
-equipment_ids = []
-equipment_types = []
-manufacturers = []
-operating_Hours = []
-temperatures = []
-vibrations = []
-fuel_consumptions = []
-brake_statuses = []
-tyre_statuses = []
-engine_statuses = []
-maintenance_statuses = []
-downtimes = []
-availabilities = []
+conn = sqlite3.connect("mining_users.db")
+cursor = conn.cursor()
+
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        full_name TEXT NOT NULL,
+        username TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        role TEXT NOT NULL
+    )
+""")
+
+conn.commit()
 
 
 
-st.title("Mining Monitoring Application")
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-username = st.text_input("Username")
-password = st.text_input("Password", type="password")
-
-if st.button("LOGIN"):
-    if username == "administrator123" and password == "administrator987":
-        st.session_state.logged_in = True
-        st.session_state.role = "Administrator"
-    elif username == "safety123" and password == "safety987":
-        st.session_state.logged_in = True
-        st.session_state.role = "Safety Officer"
-    elif username == "mining123" and password == "mining987":
-        st.session_state.logged_in = True
-        st.session_state.role = "Mining Engineer"
-    elif username == "maintenance123" and password == "maintenance987":
-        st.session_state.logged_in = True
-        st.session_state.role = "Maintenance Engineer"
-    elif username == "manager123" and password == "manager987":
-        st.session_state.logged_in = True
-        st.session_state.role = "Manager"
-    else:
-        st.error("Invalid username or password")
 
 permissions = {
     "Administrator": [
@@ -70,6 +43,7 @@ permissions = {
         "Alerts & Notifications",
         "Manage Users"
     ],
+
     "Safety Officer": [
         "Dashboard",
         "Worker Safety",
@@ -77,6 +51,7 @@ permissions = {
         "Risk Assessment",
         "Alerts & Notifications"
     ],
+
     "Mining Engineer": [
         "Dashboard",
         "Worker Safety",
@@ -87,6 +62,7 @@ permissions = {
         "Risk Assessment",
         "Alerts & Notifications"
     ],
+
     "Maintenance Engineer": [
         "Dashboard",
         "Equipment database",
@@ -94,6 +70,7 @@ permissions = {
         "Maintenance",
         "Alerts & Notifications"
     ],
+
     "Manager": [
         "Dashboard",
         "Worker Safety",
@@ -106,16 +83,203 @@ permissions = {
     ]
 }
 
-if st.session_state.get("logged_in", False):
-    st.success("Login successful")
-    st.write("Role:", st.session_state.role)
 
-    allowed_modules = permissions[st.session_state.role]
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if "page" not in st.session_state:
+    st.session_state.page = "Navigation"
+
+
+
+def navigation_page():
+
+    st.title("⛏️ Mining Management System")
+    st.subheader("Welcome to the Mining Management System")
+
+    st.write(
+        "Please sign up to create your account, "
+        "or log in if you already have an account."
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("CREATE ACCOUNT", use_container_width=True):
+            st.session_state.page = "Sign Up"
+            st.rerun()
+
+    with col2:
+        if st.button("LOGIN", use_container_width=True):
+            st.session_state.page = "Login"
+            st.rerun()
+
+
+def signup_page():
+
+    st.title("Create Your Account")
+
+    st.write(
+        "Enter your details below. Your account information "
+        "will be saved so you can log in again later."
+    )
+
+    full_name = st.text_input("Full Name", key="signup_name")
+    username = st.text_input("Choose a Username", key="signup_username")
+    password = st.text_input(
+        "Create a Password",
+        type="password",
+        key="signup_password"
+    )
+    confirm_password = st.text_input(
+        "Confirm Password",
+        type="password",
+        key="confirm_password"
+    )
+
+    role = st.selectbox(
+        "Select Your Role",
+        [
+            "Safety Officer",
+            "Mining Engineer",
+            "Maintenance Engineer",
+            "Manager"
+        ]
+    )
+
+    if st.button("SAVE ACCOUNT", use_container_width=True):
+
+        if not full_name.strip() or not username.strip() or not password:
+            st.error("Please complete all required fields.")
+
+        elif password != confirm_password:
+            st.error("The passwords do not match.")
+
+        elif len(password) < 8:
+            st.error("Your password must contain at least 8 characters.")
+
+        else:
+            try:
+                cursor.execute(
+                    """
+                    INSERT INTO users
+                    (full_name, username, password_hash, role)
+                    VALUES (?, ?, ?, ?)
+                    """,
+                    (
+                        full_name.strip(),
+                        username.strip(),
+                        hash_password(password),
+                        role
+                    )
+                )
+
+                conn.commit()
+
+                st.success(
+                    "Account created successfully! "
+                    "You can now log in using your new credentials."
+                )
+
+                st.session_state.page = "Login"
+                st.rerun()
+
+            except sqlite3.IntegrityError:
+                st.error(
+                    "That username already exists. "
+                    "Please choose another username."
+                )
+
+    if st.button("BACK TO NAVIGATION"):
+        st.session_state.page = "Navigation"
+        st.rerun()
+
+
+
+def login_page():
+
+    st.title("User Login")
+
+    username = st.text_input("Username", key="login_username")
+    password = st.text_input(
+        "Password",
+        type="password",
+        key="login_password"
+    )
+
+    if st.button("LOGIN", use_container_width=True):
+
+        cursor.execute(
+            """
+            SELECT full_name, username, password_hash, role
+            FROM users
+            WHERE username = ?
+            """,
+            (username.strip(),)
+        )
+
+        user = cursor.fetchone()
+
+        if user and user[2] == hash_password(password):
+
+            st.session_state.logged_in = True
+            st.session_state.full_name = user[0]
+            st.session_state.username = user[1]
+            st.session_state.role = user[3]
+            st.session_state.page = "Home"
+
+            st.rerun()
+
+        else:
+            st.error("Invalid username or password.")
+
+    if st.button("CREATE A NEW ACCOUNT"):
+        st.session_state.page = "Sign Up"
+        st.rerun()
+
+    if st.button("BACK TO NAVIGATION"):
+        st.session_state.page = "Navigation"
+        st.rerun()
+
+
+
+def home_page():
+
+    st.title(
+        f"Welcome, {st.session_state.full_name}!"
+    )
+
+    st.success(
+        f"You are logged in as: {st.session_state.role}"
+    )
+
+    st.write(
+        "Welcome to your Mining Management System dashboard."
+    )
+
+    allowed_modules = permissions.get(
+        st.session_state.role, []
+    )
 
     module = st.sidebar.selectbox(
         "Select Module",
         allowed_modules
     )
+
+   
+   
+           
+
+    if st.sidebar.button("LOG OUT"):
+        st.session_state.logged_in = False
+        st.session_state.page = "Navigation"
+
+        for key in ["full_name", "username", "role"]:
+            st.session_state.pop(key, None)
+
+        st.rerun()
+
 
 
     if module == "Dashboard":
