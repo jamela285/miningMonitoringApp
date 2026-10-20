@@ -25,7 +25,7 @@ role TEXT NOT NULL
 conn.commit()
 
 def hash_password(password):
-return hashlib.sha256(password.encode()).hexdigest()
+  return hashlib.sha256(password.encode()).hexdigest()
 
 
 if "logged_in" not in st.session_state:
