@@ -175,13 +175,7 @@ def home_page():
         col10.metric("Average Equipment Availability", f"{sum(eq['availabilities']) / len(eq['availabilities']):.1f}%" if eq["availabilities"] else "N/A")
         col11.metric("Critical Equipment Alerts", 0)
 
-st.divider()
-st.subheader("📈 Mining Operations Analytics")
-with chart_col1: st.subheader("⚙️ Equipment Status") 
-    available = sum( 1 for a in eq["availabilities"] if a > 0 ) 
-    under_maintenance = eq["maintenance_statuses"].count( "Under Maintenance" ) 
-    unavailable = sum( 1 for a in eq["availabilities"] if a == 0 )
-    equipment_status_data = { "Status": [ "Available", "Under Maintenance", "Unavailable" ], "Number of Equipment": [ available, under_maintenance, unavailable ] } import pandas as pd equipment_status_df = pd.DataFrame( equipment_status_data ) st.bar_chart( equipment_status_df.set_index("Status") )
+
 
     elif module == "Worker Safety":
         st.header("👷Worker Health and Safety Monitoring")
