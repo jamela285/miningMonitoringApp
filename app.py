@@ -175,10 +175,6 @@ def home_page():
         col10.metric("Average Equipment Availability", f"{sum(eq['availabilities']) / len(eq['availabilities']):.1f}%" if eq["availabilities"] else "N/A")
         col11.metric("Critical Equipment Alerts", 0)
 
-
-        st.divider()
-        st.subheader("📊 Dashboard Charts")
-
         import pandas as pd
 
         col1, col2 = st.columns(2)
