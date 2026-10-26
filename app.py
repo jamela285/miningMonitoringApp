@@ -173,7 +173,7 @@ def home_page():
         col8.metric("Equipment Under Maintenance", eq["maintenance_statuses"].count("Under Maintenance"))
         col9.metric("Equipment Alerts", sum(1 for i in range(len(eq["equipment_ids"])) if eq["brake_statuses"][i] == "Faulty" or eq["tyre_statuses"][i] == "Worn" or eq["engine_statuses"][i] == "Faulty" or eq["maintenance_statuses"][i] == "Overdue"))
         col10.metric("Average Equipment Availability", f"{sum(eq['availabilities']) / len(eq['availabilities']):.1f}%" if eq["availabilities"] else "N/A")
-        col11.metric("Critical Equipment Alerts", 0)
+        col12.metric("Critical Equipment Alerts", 0)
 
 
 
