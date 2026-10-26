@@ -2,6 +2,7 @@ import pandas as pd
 import sqlite3
 import hashlib
 import streamlit as st
+
 st.markdown("""
 <style>
 /* Main application background */
@@ -187,7 +188,7 @@ def home_page():
     eq = st.session_state.equipment
 
     if module == "Dashboard":
-        st.header("Mining Monitoring Dashboard")
+        st.header("📊 Dashboard")
         col1, col2, col3 = st.columns(3)
         col4, col5, col6 = st.columns(3)
         col7, col8, col9 = st.columns(3)
@@ -205,7 +206,7 @@ def home_page():
         col11.metric("Critical Equipment Alerts", 0)
 
     elif module == "Worker Safety":
-        st.header("Worker Health and Safety Monitoring")
+        st.header("👷Worker Health and Safety Monitoring")
         worker_id = st.text_input("Worker ID")
         department = st.text_input("Department")
         job_role = st.text_input("Job Role")
