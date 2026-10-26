@@ -162,7 +162,7 @@ def home_page():
         col1, col2, col3 = st.columns(3)
         col4, col5, col6 = st.columns(3)
         col7, col8, col9 = st.columns(3)
-        col10, col11 = st.columns(2)
+        col10, col12 = st.columns(3)
         col1.metric("Total Workers", 200)
         col2.metric("Total Safety Incidents", len(inc["incident_ids"]))
         col3.metric("Near Misses", sum(st.session_state.near_misses_records))
