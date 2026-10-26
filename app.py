@@ -2,6 +2,46 @@ import pandas as pd
 import sqlite3
 import hashlib
 import streamlit as st
+st.markdown("""
+<style>
+/* Main application background */
+.stApp {
+    background-color: #F4F6F9;
+}
+
+/* Main headings */
+h1, h2, h3 {
+    color: #142B4A;
+}
+
+/* Buttons */
+.stButton > button {
+    background-color: #142B4A;
+    color: white;
+    border-radius: 8px;
+    border: 2px solid #D4AF37;
+    padding: 8px 20px;
+}
+
+/* Button hover effect */
+.stButton > button:hover {
+    background-color: #D4AF37;
+    color: #142B4A;
+    border: 2px solid #142B4A;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #142B4A;
+}
+
+/* Sidebar text */
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] label {
+    color: white;
+}
+</style>
+""", unsafe_allow_html=True)
 
 st.set_page_config(page_title="Mining Monitoring Application", layout="wide")
 
