@@ -3,46 +3,7 @@ import sqlite3
 import hashlib
 import streamlit as st
 
-st.markdown("""
-<style>
-/* Main application background */
-.stApp {
-    background-color: #F4F6F9;
-}
 
-/* Main headings */
-h1, h2, h3 {
-    color: #142B4A;
-}
-
-/* Buttons */
-.stButton > button {
-    background-color: #142B4A;
-    color: white;
-    border-radius: 8px;
-    border: 2px solid #D4AF37;
-    padding: 8px 20px;
-}
-
-/* Button hover effect */
-.stButton > button:hover {
-    background-color: #D4AF37;
-    color: #142B4A;
-    border: 2px solid #142B4A;
-}
-
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background-color: #142B4A;
-}
-
-/* Sidebar text */
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] label {
-    color: white;
-}
-</style>
-""", unsafe_allow_html=True)
 
 st.set_page_config(page_title="Mining Monitoring Application", layout="wide")
 
@@ -88,11 +49,20 @@ if "near_misses_records" not in st.session_state:
     st.session_state.near_misses_records = []
 
 permissions = {
-    "Administrator": ["Dashboard", "Worker Safety", "Safety Incidents", "Equipment database", "Equipment Monitoring", "Maintenance", "Risk Assessment", "Alerts & Notifications", "Manage Users"],
+    "Administrator":
+    ["Dashboard", "Worker Safety", "Safety Incidents",
+     "Equipment database", "Equipment Monitoring", "Maintenance", "Risk Assessment", "Alerts & Notifications", "Manage Users"],
+   
     "Safety Officer": ["Dashboard", "Worker Safety", "Safety Incidents", "Risk Assessment", "Alerts & Notifications"],
-    "Mining Engineer": ["Dashboard", "Worker Safety", "Safety Incidents", "Equipment database", "Equipment Monitoring", "Maintenance", "Risk Assessment", "Alerts & Notifications"],
-    "Maintenance Engineer": ["Dashboard", "Equipment database", "Equipment Monitoring", "Maintenance", "Alerts & Notifications"],
-    "Manager": ["Dashboard", "Worker Safety", "Safety Incidents", "Equipment database", "Equipment Monitoring", "Maintenance", "Risk Assessment", "Alerts & Notifications"]
+   
+    "Mining Engineer": ["Dashboard", "Worker Safety", "Safety Incidents", 
+                        "Equipment database", "Equipment Monitoring", "Maintenance", "Risk Assessment", "Alerts & Notifications"],
+   
+    "Maintenance Engineer": ["Dashboard", "Equipment database", "Equipment Monitoring",
+                             "Maintenance", "Alerts & Notifications"],
+   
+    "Manager": ["Dashboard", "Worker Safety", "Safety Incidents", "Equipment database", "Equipment Monitoring",
+                "Maintenance", "Risk Assessment", "Alerts & Notifications"]
 }
 
 
@@ -204,6 +174,10 @@ def home_page():
         col9.metric("Equipment Alerts", sum(1 for i in range(len(eq["equipment_ids"])) if eq["brake_statuses"][i] == "Faulty" or eq["tyre_statuses"][i] == "Worn" or eq["engine_statuses"][i] == "Faulty" or eq["maintenance_statuses"][i] == "Overdue"))
         col10.metric("Average Equipment Availability", f"{sum(eq['availabilities']) / len(eq['availabilities']):.1f}%" if eq["availabilities"] else "N/A")
         col11.metric("Critical Equipment Alerts", 0)
+
+     st.divider()
+    st.subheader("📈 Mining Operations Analytics")
+with chart_col1: st.subheader("⚙️ Equipment Status") available = sum( 1 for a in eq["availabilities"] if a > 0 ) under_maintenance = eq["maintenance_statuses"].count( "Under Maintenance" ) unavailable = sum( 1 for a in eq["availabilities"] if a == 0 ) equipment_status_data = { "Status": [ "Available", "Under Maintenance", "Unavailable" ], "Number of Equipment": [ available, under_maintenance, unavailable ] } import pandas as pd equipment_status_df = pd.DataFrame( equipment_status_data ) st.bar_chart( equipment_status_df.set_index("Status") )
 
     elif module == "Worker Safety":
         st.header("👷Worker Health and Safety Monitoring")
