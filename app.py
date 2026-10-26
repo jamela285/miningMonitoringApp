@@ -162,7 +162,7 @@ def home_page():
         col1, col2, col3 = st.columns(3)
         col4, col5, col6 = st.columns(3)
         col7, col8, col9 = st.columns(3)
-        col10, col12 = st.columns(3)
+        col10, col11 = st.columns(2)
         col1.metric("Total Workers", 200)
         col2.metric("Total Safety Incidents", len(inc["incident_ids"]))
         col3.metric("Near Misses", sum(st.session_state.near_misses_records))
@@ -173,7 +173,7 @@ def home_page():
         col8.metric("Equipment Under Maintenance", eq["maintenance_statuses"].count("Under Maintenance"))
         col9.metric("Equipment Alerts", sum(1 for i in range(len(eq["equipment_ids"])) if eq["brake_statuses"][i] == "Faulty" or eq["tyre_statuses"][i] == "Worn" or eq["engine_statuses"][i] == "Faulty" or eq["maintenance_statuses"][i] == "Overdue"))
         col10.metric("Average Equipment Availability", f"{sum(eq['availabilities']) / len(eq['availabilities']):.1f}%" if eq["availabilities"] else "N/A")
-        col12.metric("Critical Equipment Alerts", 0)
+        col11.metric("Critical Equipment Alerts", 0)
 
 
 
