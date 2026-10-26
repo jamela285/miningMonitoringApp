@@ -305,7 +305,7 @@ elif module == "Safety Incidents":
                 most_common = max(counts, key=counts.get)
                 st.info(f"Most common severity: {most_common}")
 
- elif module == "Equipment database":
+elif module == "Equipment database":
         st.header("Equipment Database")
         option = st.selectbox("Select an option", ["Add Equipment", "View Equipment", "Search Equipment", "Filter Equipment", "Count Equipment", "Check Equipment Status"])
         if option == "Add Equipment":
