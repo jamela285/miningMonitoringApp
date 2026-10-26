@@ -196,13 +196,12 @@ def home_page():
             st.bar_chart(pd.DataFrame({
                 "Availability (%)": eq["availabilities"]
             }, index=eq["equipment_ids"]))
+        
         else:
             st.info("No equipment registered.")
 
+elif module == "Worker Safety":
 
-
-
-    elif module == "Worker Safety":
         st.header("👷Worker Health and Safety Monitoring")
         worker_id = st.text_input("Worker ID")
         department = st.text_input("Department")
