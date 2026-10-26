@@ -236,7 +236,7 @@ elif module == "Worker Safety":
                 st.success("Worker is currently considered safe.")
             st.info("Worker safety monitoring complete.")
 
-    elif module == "Safety Incidents":
+elif module == "Safety Incidents":
         st.header("Safety Incident Database")
         option = st.selectbox("Select an option", ["Add Incident", "View Incidents", "Search Incidents", "Filter Incidents", "Categorise Incidents", "Count Incidents", "Analyse Incident Trends"])
         if option == "Add Incident":
@@ -305,7 +305,7 @@ elif module == "Worker Safety":
                 most_common = max(counts, key=counts.get)
                 st.info(f"Most common severity: {most_common}")
 
-    elif module == "Equipment database":
+ elif module == "Equipment database":
         st.header("Equipment Database")
         option = st.selectbox("Select an option", ["Add Equipment", "View Equipment", "Search Equipment", "Filter Equipment", "Count Equipment", "Check Equipment Status"])
         if option == "Add Equipment":
@@ -380,7 +380,7 @@ elif module == "Worker Safety":
                     if needs_attention: st.warning("Status: ATTENTION REQUIRED")
                     else: st.success("Status: Equipment is OK")
 
-    elif module == "Risk Assessment":
+ elif module == "Risk Assessment":
         st.header("Mining Risk Assessment")
         hazard = st.text_input("Enter Hazard")
         likelihood = st.selectbox("Likelihood (1-5)", [1, 2, 3, 4, 5])
@@ -402,7 +402,7 @@ elif module == "Worker Safety":
             elif classification == "Medium": st.info("Medium risk identified. Appropriate control measures are required.")
             else: st.success("Low risk identified. Continue monitoring the hazard.")
 
-    elif module == "Equipment Monitoring":
+ elif module == "Equipment Monitoring":
         st.header("Equipment Condition Monitoring")
         equipment_id = st.text_input("Enter Equipment ID")
         temperature = st.number_input("Enter Temperature (°C)", min_value=0.0, step=1.0)
@@ -433,7 +433,7 @@ elif module == "Worker Safety":
             elif temperature_status == "WARNING" or vibration_status == "WARNING": st.warning("Monitoring required.")
             else: st.success("Equipment operating normally.")
 
-    elif module == "Maintenance":
+ elif module == "Maintenance":
         st.title("Maintenance Management")
         equipment_id = st.text_input("Enter Equipment ID", key="maintenance_equipment_id")
         equipment_type = st.selectbox("Enter Equipment Type", ["Haul Truck", "Loader", "Excavator", "Drill", "Bulldozer", "Crusher", "Conveyor", "Other"], key="maintenance_equipment_type")
@@ -464,7 +464,7 @@ elif module == "Worker Safety":
                 if maintenance_status == "Normal" and downtime <= 20 and repeated_alerts < 3 and availability >= 80:
                     st.success("Equipment is operating normally.")
 
-    elif module == "Alerts & Notifications":
+ elif module == "Alerts & Notifications":
         st.header("Alerts & Notifications")
         alerts = []
         for i, equipment_id in enumerate(eq["equipment_ids"]):
@@ -478,7 +478,7 @@ elif module == "Worker Safety":
         else:
             st.success("There are currently no equipment alerts.")
 
-    elif module == "Manage Users":
+elif module == "Manage Users":
         st.header("Manage Users")
         cursor.execute("SELECT full_name, username, role FROM users ORDER BY full_name")
         users = cursor.fetchall()
