@@ -157,7 +157,7 @@ def home_page():
     inc = st.session_state.incidents
     eq = st.session_state.equipment
 
-   if module == "Dashboard":
+if module == "Dashboard":
     st.header("📊 Dashboard")
 
     col1, col2, col3 = st.columns(3)
