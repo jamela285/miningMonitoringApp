@@ -176,6 +176,44 @@ def home_page():
         col11.metric("Critical Equipment Alerts", 0)
 
 
+        st.divider()
+        st.subheader("📊 Dashboard Charts")
+
+        import pandas as pd
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.write("Safety Overview")
+            st.bar_chart(pd.DataFrame({
+                "Count": [
+                    len(inc["incident_ids"]),
+                    sum(st.session_state.near_misses_records)
+                ]
+            }, index=["Incidents", "Near Misses"]))
+
+        with col2:
+            st.write("Equipment Faults")
+            st.bar_chart(pd.DataFrame({
+                "Count": [
+                    eq["brake_statuses"].count("Faulty"),
+                    eq["tyre_statuses"].count("Worn"),
+                    eq["engine_statuses"].count("Faulty"),
+                    eq["maintenance_statuses"].count("Overdue")
+                ]
+            }, index=["Brake Faults", "Worn Tyres", "Engine Faults", "Overdue Maintenance"]))
+
+        st.write("Equipment Availability")
+        if eq["equipment_ids"]:
+            st.bar_chart(pd.DataFrame({
+                "Availability (%)": eq["availabilities"]
+            }, index=eq["equipment_ids"]))
+        else:
+            st.info("No equipment registered yet.")
+
+
+
+
 
     elif module == "Worker Safety":
         st.header("👷Worker Health and Safety Monitoring")
